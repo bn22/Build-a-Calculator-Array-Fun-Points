@@ -12,6 +12,10 @@ func convert(incoming:String) -> Int {
     return NSNumberFormatter().numberFromString(incoming)!.integerValue
 }
 
+func convertDouble(incoming:String) -> Double {
+    return NSNumberFormatter().numberFromString(incoming)!.doubleValue
+}
+
 let separators = NSCharacterSet(charactersInString: "( ),")
 let separators1 = NSCharacterSet(charactersInString: "( )")
 let separators2 = NSCharacterSet(charactersInString: "[,]")
@@ -77,28 +81,28 @@ func mathArray(operation : String, array : [Int]) -> Double {
     }
 }
 
-func tupleSub(point1 : (x : Int, y : Int), point2 : (x : Int, y : Int)) -> (Int, Int) {
-    return (Int(point1.x) - Int(point2.x), Int(point1.y) - Int(point2.y))
+func tupleSub(point1 : (x : Double, y : Double), point2 : (x : Double, y : Double)) -> (Double, Double) {
+    return ((point1.x) - (point2.x), (point1.y) - (point2.y))
 }
 
-func tupleAdd(point1 : (x : Int, y : Int), point2 : (x : Int, y : Int)) -> (Int, Int) {
-    return (Int(point1.x) + Int(point2.x), Int(point1.y) + Int(point2.y))
+func tupleAdd(point1 : (x : Double, y : Double), point2 : (x : Double, y : Double)) -> (Double, Double) {
+    return ((point1.x) + (point2.x), (point1.y) + (point2.y))
 }
 
-func dictionaryYAdd(points : [String: Int]) -> Int {
-    return Int(points["Y1"]! + points["Y2"]!)
+func dictionaryYAdd(points : [String: Double]) -> Double {
+    return (points["Y1"]! + points["Y2"]!)
 }
 
-func dictionaryXAdd(points : [String: Int]) -> Int {
-    return Int(points["X1"]! + points["X2"]!)
+func dictionaryXAdd(points : [String: Double]) -> Double {
+    return (points["X1"]! + points["X2"]!)
 }
 
-func dictionaryYSub(points : [String: Int]) -> Int {
-    return Int(points["Y1"]! - points["Y2"]!)
+func dictionaryYSub(points : [String: Double]) -> Double {
+    return (points["Y1"]! - points["Y2"]!)
 }
 
-func dictionaryXSub(points : [String: Int]) -> Int {
-    return Int(points["X2"]! - points["X2"]!)
+func dictionaryXSub(points : [String: Double]) -> Double {
+    return (points["X2"]! - points["X2"]!)
 }
 
 
@@ -182,10 +186,10 @@ if userInput == "Calculator" {
     let pointOperation = input()
     print("Tuple Or Dictionary")
     let parameterOption = input()
-    let point1X  = convert(input())
-    let point1Y  = convert(input())
-    let point2X  = convert(input())
-    let point2Y  = convert(input())
+    let point1X = convertDouble(input())
+    let point1Y = convertDouble(input())
+    let point2X = convertDouble(input())
+    let point2Y = convertDouble(input())
     if parameterOption == "Dictionary" {
         if pointOperation == "add" {
             var dictionary = ["X1" : point1X, "X2" : point2X, "Y1" : point1Y, "Y2" : point2Y]
