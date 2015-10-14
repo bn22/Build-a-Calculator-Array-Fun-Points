@@ -20,16 +20,16 @@ let separators = NSCharacterSet(charactersInString: "( ),")
 let separators1 = NSCharacterSet(charactersInString: "( )")
 let separators2 = NSCharacterSet(charactersInString: "[,]")
 
-func add(a : Int, b : Int) -> Double {
-    return Double(a + b)
+func add(a : Int, b : Int) -> Int {
+    return a + b
 }
 
-func subtract(a : Int, b : Int) -> Double {
-    return Double(a - b)
+func subtract(a : Int, b : Int) -> Int {
+    return a - b
 }
 
-func multiply(a : Int, b : Int) -> Double {
-    return Double(a * b)
+func multiply(a : Int, b : Int) -> Int {
+    return a * b
 }
 
 func divide(a : Int, b : Int) -> Double {
@@ -73,7 +73,7 @@ func mathArray(operation : String, array : [Int]) -> Double {
     if operation == "add" {
         return Double(array.reduce(0,combine: +))
     } else if operation == "multiply" {
-        return Double(array.reduce(0,combine: *))
+        return Double(array.reduce(1,combine: *))
     } else if operation == "count" {
         return Double(array.count)
     } else {  //operation == "average" {
@@ -81,12 +81,20 @@ func mathArray(operation : String, array : [Int]) -> Double {
     }
 }
 
-func tupleSub(point1 : (x : Double, y : Double), point2 : (x : Double, y : Double)) -> (Double, Double) {
-    return ((point1.x) - (point2.x), (point1.y) - (point2.y))
+func tupleSub(point1 : (x : Int, y : Int), point2 : (x : Int, y : Int)) -> (Int, Int) {
+    if (point1.x != nil && point1.y != nil && point2.x != nil && point2.y != nil) {
+        return ((point1.x) - (point2.x), (point1.y) - (point2.y))
+    } else {
+        
+    }
 }
 
-func tupleAdd(point1 : (x : Double, y : Double), point2 : (x : Double, y : Double)) -> (Double, Double) {
-    return ((point1.x) + (point2.x), (point1.y) + (point2.y))
+func tupleAdd(point1 : (x : Int, y : Int), point2 : (x : Int, y : Int)) -> (Int, Int) {
+    if (point1.x != nil && point1.y != nil && point2.x != nil && point2.y != nil) {
+        return ((point1.x) + (point2.x), (point1.y) + (point2.y))
+    } else {
+        
+    }
 }
 
 func dictionaryYAdd(points : [String: Double]) -> Double {
@@ -105,114 +113,60 @@ func dictionaryXSub(points : [String: Double]) -> Double {
     return (points["X2"]! - points["X2"]!)
 }
 
-
-print ("Choose Portion of HW (Calculator, Array or Points)")
-var userInput = input()
-if userInput == "Calculator" {
-    print("Please Enter add, subtract, multiply, divide or math")
-    var calculatorInput = input()
-    var calculatorArray : [String] = calculatorInput.componentsSeparatedByCharactersInSet(separators)
-    if (calculatorArray[0] != "math") {
-        let num1 = Int(calculatorArray[1])
-        let num2 = Int(calculatorArray[2])
-        if (calculatorArray[0] == "add") {
-            let result = Int(add(convert(calculatorArray[1]), b : convert(calculatorArray[2])))
-            print("\(num1!) + \(num2!) = \(result)")
-        } else if (calculatorArray[0] == "subtract") {
-            let result = Int(subtract(convert(calculatorArray[1]), b : convert(calculatorArray[2])))
-            print("\(num1!) - \(num2!) = \(result)")
-        } else if (calculatorArray[0] == "multiply") {
-            let result = Int(multiply(convert(calculatorArray[1]), b : convert(calculatorArray[2])))
-            print("\(num1!) * \(num2!) = \(result)")
-        } else if (calculatorArray[0] == "divide") {
-            let result = divide(convert(calculatorArray[1]), b : convert(calculatorArray[2]))
-            print("\(num1!) / \(num2!) = \(result)")
-        }
-    } else {
-        let num1 = Int(calculatorArray[2])
-        let num2 = Int(calculatorArray[3])
-        if (calculatorArray[1] == "add") {
-            let result = Int(math(convert(calculatorArray[2]), num2: convert(calculatorArray[3])) { Double($0) + Double($1) })
-            print("\(num1!) + \(num2!) = \(result)")
-        } else if (calculatorArray[1] == "subtract") {
-            let result = Int(math(convert(calculatorArray[2]), num2: convert(calculatorArray[3])) { Double($0) - Double($1) })
-            print("\(num1!) - \(num2!) = \(result)")
-        } else if (calculatorArray[1] == "multiply") {
-            let result = Int(math(convert(calculatorArray[2]), num2: convert(calculatorArray[3])) { Double($0) * Double($1) })
-            print("\(num1!) * \(num2!) = \(result)")
-        } else if (calculatorArray[1] == "divide") {
-            let result = math(convert(calculatorArray[2]), num2: convert(calculatorArray[3])) { Double($0) / Double($1) }
-            print("\(num1!) / \(num2!) = \(result)")
-        }
-    }
-} else if userInput == "Array" {
-    print("Please Enter add, multiply, count, average or math")
-    var arrayInput = input()
-    var arrayArray = arrayInput.componentsSeparatedByCharactersInSet(separators1)
-    if (arrayArray[0] != "math") {
-        var array = arrayArray[1]
-        var finalArray = array.componentsSeparatedByCharactersInSet(separators2)
-        var final = [Int]()
-        for (var index = 1; index < finalArray.count - 1;index++) {
-            let num = convert(finalArray[index])
-            final.append(num)
-        }
-        if (arrayArray[0] == "add") {
-            let result = Int(addArray(final))
-            print("\(arrayInput) = \(result)")
-        } else if (arrayArray[0] == "multiply") {
-            let result = Int(mulArray(final))
-            print("\(arrayInput) = \(result)")
-        } else if (arrayArray[0] == "count") {
-            let result = Int(countArray(final))
-            print("\(arrayInput) = \(result)")
-        } else if (arrayArray[0] == "average") {
-            let result = avgArray(final)
-            print("\(arrayInput) = \(result)")
-        }
-    } else {
-        var array = arrayArray[2]
-        var finalArray = array.componentsSeparatedByCharactersInSet(separators2)
-        var final = [Int]()
-        for (var index = 1; index < finalArray.count - 1;index++) {
-            let num = convert(finalArray[index])
-            final.append(num)
-        }
-        let result = mathArray(arrayArray[1], array : final)
-        print("\(arrayInput) = \(result)")
-    }
-} else {
-    print("Choose between add and subtract")
-    let pointOperation = input()
-    print("Tuple Or Dictionary")
-    let parameterOption = input()
-    let point1X = convertDouble(input())
-    let point1Y = convertDouble(input())
-    let point2X = convertDouble(input())
-    let point2Y = convertDouble(input())
-    if parameterOption == "Dictionary" {
-        if pointOperation == "add" {
-            var dictionary = ["X1" : point1X, "X2" : point2X, "Y1" : point1Y, "Y2" : point2Y]
-            let xResult = dictionaryXAdd(dictionary)
-            let yResult = dictionaryYAdd(dictionary)
-            print("(\(point1X), \(point1Y)) + (\(point2X), \(point2Y)) = (\(xResult), \(yResult))")
-        } else if pointOperation == "subtract" {
-            var dictionary = ["X1" : point1X, "X2" : point2X, "Y1" : point1Y, "Y2" : point2Y]
-            let xResult = dictionaryXSub(dictionary)
-            let yResult = dictionaryYSub(dictionary)
-            print("(\(point1X), \(point1Y)) - (\(point2X), \(point2Y)) = (\(xResult), \(yResult))")
-        }
-    } else if parameterOption == "Tuple" {
-        if pointOperation == "add" {
-            let result = tupleAdd((point1X, point1Y), point2 : (point2X, point2Y))
-            print("(\(point1X), \(point1Y)) + (\(point2X), \(point2Y)) = \(result)")
-        } else if pointOperation == "subtract"{
-            let result = tupleSub((point1X, point1Y), point2 : (point2X, point2Y))
-            print("(\(point1X), \(point1Y)) - (\(point2X), \(point2Y)) = \(result)")
-        }
-    }
-}
-
+print("")
+print("Random Unit Test For 1")
+print("")
+print("Addition : 1 + 2 = \(add(1, b : 2))")
+print("Subtraction : 1 - 2 = \(subtract(1, b : 2))")
+print("Mulitplcation : 1 * 2 = \(multiply(1, b : 2))")
+print("Divison : 1 / 2 = \(divide(1, b : 2))")
+print("Generic Addition : 13 + 2 = \(math(13, num2 : 2){ Double($0) + Double($1) })")
+print("Generic Subtraction : 13 + 2 = \(math(13, num2 : 2){ Double($0) - Double($1) })")
+print("Generic Muliplcation : 13 + 2 = \(math(13, num2 : 2){ Double($0) * Double($1) })")
+print("Generic Division : 13 + 2 = \(math(13, num2 : 2){ Double($0) / Double($1) })")
+print("")
+print("Random Unit Test For 2")
+print("")
+print("Addition [2,4,7,10] = \(addArray([2,4,7,10]))")
+print("Muliply [2,4,7,10] = \(mulArray([2,4,7,10]))")
+print("Count [2,4,7,10] = \(countArray([2,4,7,10]))")
+print("Average [2,4,7,10] = \(avgArray([2,4,7,10]))")
+let array = [9, 1, 3, 2, 4, 2, 3]
+let arrayAdd = mathArray("add", array : array)
+let arrayMul = mathArray("multiply", array : array)
+let arrayCount = mathArray("count", array : array)
+let arrayAvg = mathArray("average", array : array)
+print("Generic Addition [1, 9, 3, 2, 4, 2, 3] = \(arrayAdd)")
+print("Generic Multiplication [1, 9, 3, 2, 4, 2, 3] = \(arrayMul)")
+print("Generic Count [1, 9, 3, 2, 4, 2, 3] = \(arrayCount)")
+print("Generic Average [1, 9, 3, 2, 4, 2, 3] = \(arrayAvg)")
+print("")
+print("Random Unit Test For 3")
+print("")
+let X1 = 4
+let X2 = 3
+let Y1 = 2
+let Y2 = 4
+let tupAdd = tupleAdd((X1, Y1), point2 : (X2, Y2))
+print("Point Addition : (\(X1), \(Y1)) + (\(X2), \(Y2)) = \(tupAdd)")
+let tupDiv = tupleSub((X1, Y1), point2 : (X2, Y2))
+print("Point Subtraction : (\(X1), \(Y1)) - (\(X2), \(Y2)) = \(tupDiv)")
+let X1Double = 4.0
+let X2Double = 3.0
+let Y1Double = 2.0
+let Y2Double = 4.0
+let tupDoubleAdd = tupleAdd((Int(X1Double), Int(Y1Double)), point2 : (Int(X2Double), Int(Y2Double)))
+print("Double Point Addition : (\(X1Double), \(Y1Double)) + (\(X2Double), \(Y2Double)) = \(tupDoubleAdd)")
+let tupDoubleSub = tupleSub((Int(X1Double), Int(Y1Double)), point2 : (Int(X2Double), Int(Y2Double)))
+print("Double Point Subtraction : (\(X1Double), \(Y1Double)) - (\(X2Double), \(Y2Double)) = \(tupDoubleSub)")
+let X1nil : Int? = 3
+let X2nil : Int? = nil
+let Y1nil : Int? = nil
+let Y2nil : Int? = 4
+let tupNilAdd = tupleAdd((Int(X1nil!), Int(X2nil!)), point2 : (Int(Y1nil!), Int(Y2nil!)))
+print("Nil Point Addition : (\(X1Double), \(Y1Double)) + (\(X2Double), \(Y2Double)) = \(tupNilAdd)")
+let tupNilSub = tupleAdd((Int(X1nil!), Int(X2nil!)), point2 : (Int(Y1nil!), Int(Y2nil!)))
+print("Nil Point Addition : (\(X1Double), \(Y1Double)) + (\(X2Double), \(Y2Double)) = \(tupNilSub)")
 
 
 
