@@ -1,25 +1,5 @@
 import Foundation
 
-func input() -> String {
-    let keyboard = NSFileHandle.fileHandleWithStandardInput()
-    let inputData = keyboard.availableData
-    let result = NSString(data: inputData, encoding:NSUTF8StringEncoding) as! String
-    print (result)
-    return result.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-}
-
-func convert(incoming:String) -> Int {
-    return NSNumberFormatter().numberFromString(incoming)!.integerValue
-}
-
-func convertDouble(incoming:String) -> Double {
-    return NSNumberFormatter().numberFromString(incoming)!.doubleValue
-}
-
-let separators = NSCharacterSet(charactersInString: "( ),")
-let separators1 = NSCharacterSet(charactersInString: "( )")
-let separators2 = NSCharacterSet(charactersInString: "[,]")
-
 func add(a : Int, b : Int) -> Int {
     return a + b
 }
@@ -81,22 +61,23 @@ func mathArray(operation : String, array : [Int]) -> Double {
     }
 }
 
-func tupleSub(point1 : (x : Int, y : Int), point2 : (x : Int, y : Int)) -> (Int, Int) {
+func tupleSub(point1 : (x : Int?, y : Int?), point2 : (x : Int?, y : Int?)) -> (Int, Int) {
     if (point1.x != nil && point1.y != nil && point2.x != nil && point2.y != nil) {
-        return ((point1.x) - (point2.x), (point1.y) - (point2.y))
+        return ((point1.x)! - (point2.x)!, (point1.y)! - (point2.y)!)
     } else {
-        
+        return(0, 0)
     }
 }
 
-func tupleAdd(point1 : (x : Int, y : Int), point2 : (x : Int, y : Int)) -> (Int, Int) {
+func tupleAdd(point1 : (x : Int?, y : Int?), point2 : (x : Int?, y : Int?)) -> (Int, Int) {
     if (point1.x != nil && point1.y != nil && point2.x != nil && point2.y != nil) {
-        return ((point1.x) + (point2.x), (point1.y) + (point2.y))
+        return ((point1.x)! + (point2.x)!, (point1.y)! + (point2.y)!)
     } else {
-        
+        return(0, 0)
     }
 }
 
+/*
 func dictionaryYAdd(points : [String: Double]) -> Double {
     return (points["Y1"]! + points["Y2"]!)
 }
@@ -112,6 +93,39 @@ func dictionaryYSub(points : [String: Double]) -> Double {
 func dictionaryXSub(points : [String: Double]) -> Double {
     return (points["X2"]! - points["X2"]!)
 }
+*/
+
+func dictionaryXSub(points : [String: (x : Double!, y: Double!)]) -> Double {
+    if (points["P1"]!.x != nil && points["P2"]!.x != nil) {
+        return (points["P1"]!.x - points["P2"]!.x)
+    } else {
+        return 0
+    }
+}
+
+func dictionaryXAdd(points : [String: (x : Double!, y: Double!)]) -> Double {
+    if (points["P1"]!.x != nil && points["P2"]!.x != nil) {
+        return (points["P1"]!.x + points["P2"]!.x)
+    } else {
+        return 0
+    }
+}
+
+func dictionaryYSub(points : [String: (x : Double!, y: Double!)]) -> Double {
+    if (points["P1"]!.x != nil && points["P2"]!.x != nil) {
+        return (points["P1"]!.y - points["P2"]!.y)
+    } else {
+        return 0
+    }
+}
+
+func dictionaryYAdd(points : [String: (x : Double!, y: Double!)]) -> Double {
+    if (points["P1"]!.x != nil && points["P2"]!.x != nil) {
+        return (points["P1"]!.y + points["P2"]!.y)
+    } else {
+        return 0
+    }
+}
 
 print("")
 print("Random Unit Test For 1")
@@ -121,9 +135,9 @@ print("Subtraction : 1 - 2 = \(subtract(1, b : 2))")
 print("Mulitplcation : 1 * 2 = \(multiply(1, b : 2))")
 print("Divison : 1 / 2 = \(divide(1, b : 2))")
 print("Generic Addition : 13 + 2 = \(math(13, num2 : 2){ Double($0) + Double($1) })")
-print("Generic Subtraction : 13 + 2 = \(math(13, num2 : 2){ Double($0) - Double($1) })")
-print("Generic Muliplcation : 13 + 2 = \(math(13, num2 : 2){ Double($0) * Double($1) })")
-print("Generic Division : 13 + 2 = \(math(13, num2 : 2){ Double($0) / Double($1) })")
+print("Generic Subtraction : 13 - 2 = \(math(13, num2 : 2){ Double($0) - Double($1) })")
+print("Generic Muliplcation : 13 * 2 = \(math(13, num2 : 2){ Double($0) * Double($1) })")
+print("Generic Division : 13 / 2 = \(math(13, num2 : 2){ Double($0) / Double($1) })")
 print("")
 print("Random Unit Test For 2")
 print("")
@@ -148,9 +162,9 @@ let X2 = 3
 let Y1 = 2
 let Y2 = 4
 let tupAdd = tupleAdd((X1, Y1), point2 : (X2, Y2))
-print("Point Addition : (\(X1), \(Y1)) + (\(X2), \(Y2)) = \(tupAdd)")
+print("Tuple Point Addition : (\(X1), \(Y1)) + (\(X2), \(Y2)) = \(tupAdd)")
 let tupDiv = tupleSub((X1, Y1), point2 : (X2, Y2))
-print("Point Subtraction : (\(X1), \(Y1)) - (\(X2), \(Y2)) = \(tupDiv)")
+print("Tuple Point Subtraction : (\(X1), \(Y1)) - (\(X2), \(Y2)) = \(tupDiv)")
 let X1Double = 4.0
 let X2Double = 3.0
 let Y1Double = 2.0
@@ -159,14 +173,21 @@ let tupDoubleAdd = tupleAdd((Int(X1Double), Int(Y1Double)), point2 : (Int(X2Doub
 print("Double Point Addition : (\(X1Double), \(Y1Double)) + (\(X2Double), \(Y2Double)) = \(tupDoubleAdd)")
 let tupDoubleSub = tupleSub((Int(X1Double), Int(Y1Double)), point2 : (Int(X2Double), Int(Y2Double)))
 print("Double Point Subtraction : (\(X1Double), \(Y1Double)) - (\(X2Double), \(Y2Double)) = \(tupDoubleSub)")
-let X1nil : Int? = 3
-let X2nil : Int? = nil
-let Y1nil : Int? = nil
-let Y2nil : Int? = 4
-let tupNilAdd = tupleAdd((Int(X1nil!), Int(X2nil!)), point2 : (Int(Y1nil!), Int(Y2nil!)))
-print("Nil Point Addition : (\(X1Double), \(Y1Double)) + (\(X2Double), \(Y2Double)) = \(tupNilAdd)")
-let tupNilSub = tupleAdd((Int(X1nil!), Int(X2nil!)), point2 : (Int(Y1nil!), Int(Y2nil!)))
-print("Nil Point Addition : (\(X1Double), \(Y1Double)) + (\(X2Double), \(Y2Double)) = \(tupNilSub)")
-
-
-
+var X1nil : Int?
+var X2nil : Int? = 4
+var Y1nil : Int?
+var Y2nil : Int? = 4
+let tupNilAdd = tupleAdd((X1nil, X2nil), point2 : (Y1nil, Y2nil))
+print("Nil Point Addition : (\(X1nil), \(Y1nil)) + (\(X2nil), \(Y2nil)) = \(tupNilAdd) so please make sure that the two points have x and y coordinates")
+let tupNilSub = tupleAdd((X1nil, X2nil), point2 : (Y1nil, Y2nil))
+print("Nil Point Subtraction : (\(X1nil), \(Y1nil)) + (\(X2nil), \(Y2nil)) = \(tupNilSub) so please make sure that the two points have x and y coordinates")
+let dictionary : [String: (x : Double!, y : Double!)] = ["P1" : (x : 2.0, y : 3.0), "P2" : (x : 1.0, y : 2.0)]
+let sumXDictionary = dictionaryXSub(dictionary)
+let sumYDictionary = dictionaryYSub(dictionary)
+print("Dictionary with Doubles(2.0, 3.0) - (1.0, 2.0) = (\(sumXDictionary) , \(sumYDictionary))")
+let addYDictionary = dictionaryYAdd(dictionary)
+let addXDictionary = dictionaryXAdd(dictionary)
+print("Dictionary with Doubles(2.0, 3.0) - (1.0, 2.0) = (\(sumXDictionary) , \(sumYDictionary))")
+let nilDictionary : [String: (x : Double!, y : Double!)] = ["P1" : (x : 2.0, y : nil), "P2" : (x : nil, y : 2.0)]
+let nilAnswer = dictionaryYAdd(nilDictionary)
+print("Dictionary with Nil(2.0, nil), (nil, 2.0) gets \(nilAnswer) but doesn't crash")
